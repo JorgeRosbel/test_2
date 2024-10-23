@@ -26,7 +26,7 @@ export const useFetchMovie = (title: string) => {
     try {
       const response = await axios.get<Response>(endpoint);
       console.log(response.data);
-      return response.data.Search;
+      return response.data.Search || [];
     } catch (error: unknown) {
       if (error instanceof Error || axios.isAxiosError(error)) {
         throw new Error("Failed to fetch a movie: " + error.message);
@@ -37,10 +37,10 @@ export const useFetchMovie = (title: string) => {
   };
 
   return useQuery({
-    queryKey: ["movie", debouncedTitle], // Usar el valor debounced en la query
+    queryKey: ["movie", debouncedTitle], 
     queryFn: queryFn,
     staleTime: 1000 * 60 * 10,
     refetchOnWindowFocus: false,
-    enabled: !!debouncedTitle, // Habilitar la query solo si hay un valor
+    enabled: !!debouncedTitle, 
   });
 };
