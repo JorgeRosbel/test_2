@@ -19,7 +19,7 @@ export const useFetchMovie = (title: string) => {
   const debouncedTitle = useDebounce(title, 2000); // 2000 ms de retraso
 
   const queryFn = async (): Promise<Data[]> => {
-    const endpoint = `http://omdbapi.com/?apikey=${API_KEY}&s=${encodeURI(debouncedTitle)}`;
+    const endpoint = `https://omdbapi.com/?apikey=${API_KEY}&s=${encodeURI(debouncedTitle)}`;
 
     console.log("Fetching data...");
 
