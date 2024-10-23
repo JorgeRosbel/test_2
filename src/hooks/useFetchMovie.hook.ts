@@ -19,14 +19,14 @@ export const useFetchMovie = (title: string) => {
   const debouncedTitle = useDebounce(title, 2000); // 2000 ms de retraso
 
   const queryFn = async (): Promise<Data[]> => {
-    const endpoint = `http://omdbapi.com/?apikey=${API_KEY}&s=${encodeURI(debouncedTitle)}`;
+    const endpoint = `https://omdbapi.com/?apikey=${API_KEY}&s=${encodeURI(debouncedTitle)}`;
 
     console.log("Fetching data...");
 
     try {
       const response = await axios.get<Response>(endpoint);
       console.log(response.data);
-      return response.data.Search;
+      return response.data.Search || [];
     } catch (error: unknown) {
       if (error instanceof Error || axios.isAxiosError(error)) {
         throw new Error("Failed to fetch a movie: " + error.message);
@@ -37,10 +37,10 @@ export const useFetchMovie = (title: string) => {
   };
 
   return useQuery({
-    queryKey: ["movie", debouncedTitle], // Usar el valor debounced en la query
+    queryKey: ["movie", debouncedTitle], 
     queryFn: queryFn,
     staleTime: 1000 * 60 * 10,
     refetchOnWindowFocus: false,
-    enabled: !!debouncedTitle, // Habilitar la query solo si hay un valor
+    enabled: !!debouncedTitle, 
   });
 };
